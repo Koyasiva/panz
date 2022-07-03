@@ -12,8 +12,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - chmod 777 /var/run/docker.sock.
-      - docker build -t  $REPOSITORY_URI:demo-app-${CODEBUILD_BUILD_NUMBER} .
+      - docker build -t  $REPOSITORY_URI:demo-siva-${CODEBUILD_BUILD_NUMBER} .
   post_build:
     commands:
       - echo Build completed on `date`
