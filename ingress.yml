@@ -8,8 +8,8 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.name: kiosk-group
-    alb.ingress.kubernetes.io/subnets: subnet-0fde4da1cef4e9300,subnet-0a7d93bed555f9452
-    alb.ingress.kubernetes.io/security-groups: sg-078ee7aafa8232399
+    alb.ingress.kubernetes.io/subnets: subnet-061b0f90bb1124917,subnet-073abe676af07d018
+    alb.ingress.kubernetes.io/security-groups: sg-0503f42b4c7995ce7
     alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '8'
