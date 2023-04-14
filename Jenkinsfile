@@ -3,7 +3,7 @@ pipeline {
   triggers {
     pollSCM '* * * * *'
   }
-  stages {
+ stages {
 //     stage('SonarQube Analysis') {
 //       steps {
 //         sh '''
@@ -26,17 +26,36 @@ pipeline {
         sh '''
          whoami
 	 echo $access_key
+	 echo $secret_key
          aws configure set aws_access_key_id $access_key
          aws configure set aws_secret_access_key $secret_key
-         aws configure set default.region ap-south-1
-         DOCKER_LOGIN_PASSWORD=$(aws ecr get-login-password  --region ap-south-1)
-         docker login -u AWS -p $DOCKER_LOGIN_PASSWORD https://291611055451.dkr.ecr.ap-south-1.amazonaws.com
-         docker build -t 291611055451.dkr.ecr.ap-south-1.amazonaws.com/new-${BUILD_NUMBER} .
-         docker push 291611055451.dkr.ecr.ap-south-1.amazonaws.com/new-${BUILD_NUMBER}
+         aws configure set default.region us-west-1
+         DOCKER_LOGIN_PASSWORD=$(aws ecr get-login-password  --region us-west-1)
+         docker login -u AWS -p $DOCKER_LOGIN_PASSWORD https://738494208482.dkr.ecr.us-west-1.amazonaws.com
+	 docker build -t 738494208482.dkr.ecr.us-west-1.amazonaws.com/sri:SAMPLE-PROJECT-${BUILD_NUMBER} .
+	 docker push 738494208482.dkr.ecr.us-west-1.amazonaws.com/sri:SAMPLE-PROJECT-${BUILD_NUMBER}
           
 	  '''
      }   
    }
+	 
+    stage('Deploy  K8'){
+            steps {
+                 sh '''
+                  export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                  export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+                  export AWS_DEFAULT_REGION=us-west-1
+		  chmod +x changebuildnumber.sh
+                  ./changebuildnumber.sh $BUILD_NUMBER
+                  aws eks --region us-west-1 update-kubeconfig --name sri
+                  cat deployment.yml
+                  kubectl apply -f  deployment-new.yml
+                  kubectl get pods 
+                  '''
+
+            }
+        }
+ 
 //     stage('ecs deploy') {
 //       steps {
 //         sh '''
@@ -60,4 +79,4 @@ pipeline {
 //     }
 // }
 
-}
+ }
